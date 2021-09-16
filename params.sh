@@ -1,7 +1,7 @@
 # container name
 
-CONTAINER_NAME_BUILD_ENV_GEN='con_build_env_gen'
-CONTAINER_NAME_BUILD_ENV='con_build_env'
+CONTAINER_NAME_TOOLCHAIN='con_chain'
+CONTAINER_NAME_THIRDPARTY='con_thirdparty'
 
 # dependency
 

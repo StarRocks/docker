@@ -2,8 +2,8 @@ set -e
 curdir=`dirname "$0"`
 curdir=`cd "$curdir"; pwd`
 
-IMAGE_NAME_BUILD_ENV_GEN='build_env_gen'
-IMAGE_NAME_BUILD_ENV='build_env'
+IMAGE_NAME_TOOLCHAIN='toolchain'
+IMAGE_NAME_THIRDPARTY='thirdparty'
 
 source params.sh
 
@@ -14,7 +14,7 @@ if [[ ! -f "jdk.rpm" ]]; then
     exit 1
 fi
 
-cd sr_build_env_gen_image
+cd sr-toolchain
 rm -rf starrocks
 git clone -b $GIT_BRANCH $GIT_REPO
 
@@ -49,11 +49,11 @@ if [[ ! -d "starrocks/thirdparty/src" ]]; then
     bash starrocks/thirdparty/download-for-docker-thirdparty.sh
 fi 
 
-echo "========== start to build $IMAGE_NAME_BUILD_ENV_GEN..."
+echo "========== start to build $IMAGE_NAME_TOOLCHAIN..."
 
-# build $IMAGE_NAME_BUILD_ENV_GEN && copy thirdparty from CONTAINER(env_gen)
+# build $IMAGE_NAME_TOOLCHAIN && copy thirdparty from CONTAINER(env_gen)
 docker build \
--t starrocks/$IMAGE_NAME_BUILD_ENV_GEN:$IMAGE_VERSION \
+-t starrocks/$IMAGE_NAME_TOOLCHAIN:$IMAGE_VERSION \
 --build-arg GCC_VERSION=$GCC_VERSION \
 --build-arg GCC_URL=$GCC_URL \
 --build-arg CMAKE_VERSION=$CMAKE_VERSION \
@@ -62,25 +62,25 @@ docker build \
 --build-arg SHA=$SHA \
 --build-arg BASE_URL=$BASE_URL .
 
-echo "========== build $IMAGE_NAME_BUILD_ENV_GEN... done"
+echo "========== build $IMAGE_NAME_TOOLCHAIN... done"
 
-RUNNING=$(docker ps -a | grep $CONTAINER_NAME_BUILD_ENV_GEN || echo 0)
+RUNNING=$(docker ps -a | grep $CONTAINER_NAME_TOOLCHAIN || echo 0)
 if [ ${#RUNNING} != 1 ]; then
-    echo "======= $CONTAINER_NAME_BUILD_ENV_GEN is exist."
-    docker rm -f $CONTAINER_NAME_BUILD_ENV_GEN
+    echo "======= $CONTAINER_NAME_TOOLCHAIN is exist."
+    docker rm -f $CONTAINER_NAME_TOOLCHAIN
 else 
-    echo "======= $CONTAINER_NAME_BUILD_ENV_GEN is not exist."
+    echo "======= $CONTAINER_NAME_TOOLCHAIN is not exist."
 fi
 
-echo "========== start $CONTAINER_NAME_BUILD_ENV_GEN..."
+echo "========== start $CONTAINER_NAME_TOOLCHAIN..."
 
-docker run -it --name $CONTAINER_NAME_BUILD_ENV_GEN -d starrocks/$IMAGE_NAME_BUILD_ENV_GEN:$IMAGE_VERSION
+docker run -it --name $CONTAINER_NAME_TOOLCHAIN -d starrocks/$IMAGE_NAME_TOOLCHAIN:$IMAGE_VERSION
 
-echo '========== transfer thirdparty...'
-docker cp $CONTAINER_NAME_BUILD_ENV_GEN:/var/local/thirdparty ../sr_build_env_image/
+echo "========== transfer thirdparty..."
+docker cp $CONTAINER_NAME_TOOLCHAIN:/var/local/thirdparty ../sr-thirdparty/
 rm -rf jdk.rpm
 
-cd ../sr_build_env_image
+cd ../sr-thirdparty
 if [[ ! -d "thirdparty" ]]; then
     echo "thirdparty not found"
     exit 1
@@ -95,9 +95,9 @@ if [[ ! -f "jdk.rpm" ]]; then
     exit 1
 fi
 
-echo "========== start to build $IMAGE_NAME_BUILD_ENV..."
+echo "========== start to build $IMAGE_NAME_THIRDPARTY..."
 
-docker build -t starrocks/$IMAGE_NAME_BUILD_ENV:$IMAGE_VERSION \
+docker build -t starrocks/$IMAGE_NAME_THIRDPARTY:$IMAGE_VERSION \
 --build-arg GCC_VERSION=$GCC_VERSION \
 --build-arg GCC_URL=$GCC_URL \
 --build-arg CMAKE_VERSION=$CMAKE_VERSION \
@@ -106,5 +106,5 @@ docker build -t starrocks/$IMAGE_NAME_BUILD_ENV:$IMAGE_VERSION \
 --build-arg SHA=$SHA \
 --build-arg BASE_URL=$BASE_URL .
 
-echo "========== build $IMAGE_NAME_BUILD_ENV done..."
-# docker run -it --name build_env -d starrocks/build_env
+echo "========== build $IMAGE_NAME_THIRDPARTY done..."
+

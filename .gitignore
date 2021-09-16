@@ -1,8 +1,7 @@
-src
-sr_build_env_gen_image/starrocks
-sr_build_env_gen_image/jdk.rpm
-sr_build_env_image/jdk.rpm
-sr_build_env_image/thirdparty.zip
-sr_build_env_image/thirdparty
+sr-toolchain/starrocks
+sr-toolchain/jdk.rpm
+sr-thirdparty/jdk.rpm
+sr-thirdparty/thirdparty.zip
+sr-thirdparty/thirdparty
 .vscode
 jdk.rpm
