@@ -2,7 +2,14 @@ set -e
 curdir=`dirname "$0"`
 curdir=`cd "$curdir"; pwd`
 
-wget -O jdk.rpm "http://starrocks-thirdparty.oss-cn-zhangjiakou.aliyuncs.com/jdk.rpm"
+IMAGE_NAME_BUILD_ENV_GEN='build_env_gen'
+IMAGE_NAME_BUILD_ENV='build_env'
+CONTAINER_NAME_BUILD_ENV_GEN='con_build_env_gen'
+CONTAINER_NAME_BUILD_ENV='con_build_env'
+
+JDK_RPM_SOURCE='http://starrocks-thirdparty.oss-cn-zhangjiakou.aliyuncs.com/jdk.rpm'
+
+wget -O jdk.rpm "$JDK_RPM_SOURCE"
 
 if [[ ! -f "jdk.rpm" ]]; then
     echo "jdk.rpm found"
@@ -44,25 +51,26 @@ if [[ ! -d "starrocks/thirdparty/src" ]]; then
     bash starrocks/thirdparty/download-for-docker-thirdparty.sh
 fi 
 
-echo '========== build build_env_gen...'
-# build build_env_gen && copy thirdparty from CONTAINER(env_gen)
-docker build -t starrocks/build_env_gen .
-echo '========== build_env_gen... done'
+echo "========== start to build $IMAGE_NAME_BUILD_ENV_GEN..."
 
-RUNNING=$(docker ps -a | grep build_env_gen || echo 0)
+# build $IMAGE_NAME_BUILD_ENV_GEN && copy thirdparty from CONTAINER(env_gen)
+docker build -t starrocks/$IMAGE_NAME_BUILD_ENV_GEN .
+echo "========== build $IMAGE_NAME_BUILD_ENV_GEN... done"
+
+RUNNING=$(docker ps -a | grep $CONTAINER_NAME_BUILD_ENV_GEN || echo 0)
 if [ ${#RUNNING} != 1 ]; then
-    echo "======= build_env_gen is exist."
+    echo "======= $CONTAINER_NAME_BUILD_ENV_GEN is exist."
     docker rm -rf build_env_gen
 else 
-    echo "======= build_env_gen is not exist."
+    echo "======= $CONTAINER_NAME_BUILD_ENV_GEN is not exist."
 fi
 
-echo '========== start build_env_gen...'
+echo "========== start $CONTAINER_NAME_BUILD_ENV_GEN..."
 
-docker run -it --name build_env_gen -d starrocks/build_env_gen
+docker run -it --name $CONTAINER_NAME_BUILD_ENV_GEN -d starrocks/$IMAGE_NAME_BUILD_ENV_GEN
 
 echo '========== transfer thirdparty...'
-docker cp build_env_gen:/var/local/thirdparty ../sr_build_env_image/
+docker cp $CONTAINER_NAME_BUILD_ENV_GEN:/var/local/thirdparty ../sr_build_env_image/
 rm -rf jdk.rpm
 
 cd ../sr_build_env_image
@@ -80,6 +88,7 @@ if [[ ! -f "jdk.rpm" ]]; then
     exit 1
 fi
 
-echo '========== build build_env...'
-docker build -t starrocks/build_env .
+echo "========== start to build $IMAGE_NAME_BUILD_ENV..."
+docker build -t starrocks/$IMAGE_NAME_BUILD_ENV .
+echo "========== build $IMAGE_NAME_BUILD_ENV done..."
 # docker run -it --name build_env -d starrocks/build_env
