@@ -4,8 +4,8 @@ RUN yum install -y epel-release && yum install -y ccache
 
 ENV DEFAULT_DIR /var/local
 
-ARG GCC_VERSION=10.3.0
-ARG GCC_URL=https://mirrors.ustc.edu.cn/gnu/gcc/gcc-${GCC_VERSION}
+ARG GCC_VERSION
+ARG GCC_URL
 
 # install dependencies and build gcc
 RUN yum install -y bzip2 wget git gcc-c++ libstdc++-static byacc flex automake libtool binutils-devel bison ncurses-devel make mlocate unzip patch which vim-common redhat-lsb-core zip libcurl-devel \
@@ -25,8 +25,8 @@ RUN yum install -y bzip2 wget git gcc-c++ libstdc++-static byacc flex automake l
   
 ENV STARROCKS_GCC_HOME /usr
 # build cmake
-ARG CMAKE_VERSION=3.16.3
-ARG CMAKE_DOWNLOAD_URL=https://cmake.org/files/v3.16/cmake-${CMAKE_VERSION}.tar.gz
+ARG CMAKE_VERSION
+ARG CMAKE_DOWNLOAD_URL
 RUN mkdir -p /tmp/cmake && curl -fsSL -o /tmp/cmake.tar.gz ${CMAKE_DOWNLOAD_URL} \
     && tar -zxf /tmp/cmake.tar.gz -C /tmp/cmake --strip-components=1 \
     && cd /tmp/cmake \
@@ -54,10 +54,10 @@ RUN touch  ${DEFAULT_DIR}/install_jdk.sh \
     && rm ${DEFAULT_DIR}/install_jdk.sh
 ENV JAVA_HOME /usr/java/jdk
 
-# install maven 3.6.3
-ARG MAVEN_VERSION=3.6.3
-ARG SHA=c35a1803a6e70a126e80b2b3ae33eed961f83ed74d18fcd16909b2d44d7dada3203f1ffe726c17ef8dcca2dcaa9fca676987befeadc9b9f759967a8cb77181c0
-ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
+
+ARG MAVEN_VERSION
+ARG SHA
+ARG BASE_URL
 RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
   && curl -fsSL -o /tmp/apache-maven.tar.gz ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
   && echo "${SHA}  /tmp/apache-maven.tar.gz" | sha512sum -c - \

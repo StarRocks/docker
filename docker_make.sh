@@ -52,7 +52,16 @@ fi
 echo "========== start to build $IMAGE_NAME_BUILD_ENV_GEN..."
 
 # build $IMAGE_NAME_BUILD_ENV_GEN && copy thirdparty from CONTAINER(env_gen)
-docker build -t starrocks/$IMAGE_NAME_BUILD_ENV_GEN:$IMAGE_VERSION .
+docker build \
+-t starrocks/$IMAGE_NAME_BUILD_ENV_GEN:$IMAGE_VERSION \
+--build-arg GCC_VERSION=$GCC_VERSION \
+--build-arg GCC_URL=$GCC_URL \
+--build-arg CMAKE_VERSION=$CMAKE_VERSION \
+--build-arg CMAKE_DOWNLOAD_URL=$CMAKE_DOWNLOAD_URL \
+--build-arg MAVEN_VERSION=$MAVEN_VERSION \
+--build-arg SHA=$SHA \
+--build-arg BASE_URL=$BASE_URL .
+
 echo "========== build $IMAGE_NAME_BUILD_ENV_GEN... done"
 
 RUNNING=$(docker ps -a | grep $CONTAINER_NAME_BUILD_ENV_GEN || echo 0)
@@ -87,6 +96,15 @@ if [[ ! -f "jdk.rpm" ]]; then
 fi
 
 echo "========== start to build $IMAGE_NAME_BUILD_ENV..."
-docker build -t starrocks/$IMAGE_NAME_BUILD_ENV:$IMAGE_VERSION .
+
+docker build -t starrocks/$IMAGE_NAME_BUILD_ENV:$IMAGE_VERSION \
+--build-arg GCC_VERSION=$GCC_VERSION \
+--build-arg GCC_URL=$GCC_URL \
+--build-arg CMAKE_VERSION=$CMAKE_VERSION \
+--build-arg CMAKE_DOWNLOAD_URL=$CMAKE_DOWNLOAD_URL \
+--build-arg MAVEN_VERSION=$MAVEN_VERSION \
+--build-arg SHA=$SHA \
+--build-arg BASE_URL=$BASE_URL .
+
 echo "========== build $IMAGE_NAME_BUILD_ENV done..."
 # docker run -it --name build_env -d starrocks/build_env
