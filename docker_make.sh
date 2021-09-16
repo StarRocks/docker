@@ -2,6 +2,13 @@ set -e
 curdir=`dirname "$0"`
 curdir=`cd "$curdir"; pwd`
 
+wget -O jdk.rpm "http://starrocks-thirdparty.oss-cn-zhangjiakou.aliyuncs.com/jdk.rpm"
+
+if [[ ! -f "jdk.rpm" ]]; then
+    echo "jdk.rpm found"
+    exit 1
+fi
+
 cd sr_build_env_gen_image
 rm -rf starrocks
 git clone https://github.com/StarRocks/starrocks.git
@@ -41,12 +48,14 @@ echo '========== build build_env_gen...'
 # build build_env_gen && copy thirdparty from CONTAINER(env_gen)
 docker build -t starrocks/build_env_gen .
 echo '========== build_env_gen... done'
-# result=$(docker ps | grep build_env_gen)
 
-# if [[ -n $result ]]; then
-#     echo 'build_env_gen is runnning'
-#     docker rm -f build_env_gen
-# fi
+RUNNING=$(docker ps -a | grep build_env_gen || echo 0)
+if [ ${#RUNNING} != 1 ]; then
+    echo "======= build_env_gen is exist."
+    docker rm -rf build_env_gen
+else 
+    echo "======= build_env_gen is not exist."
+fi
 
 echo '========== start build_env_gen...'
 

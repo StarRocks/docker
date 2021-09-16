@@ -5,3 +5,4 @@ sr_build_env_image/jdk.rpm
 sr_build_env_image/thirdparty.zip
 sr_build_env_image/thirdparty
 .vscode
+jdk.rpm
