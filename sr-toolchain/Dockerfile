@@ -71,9 +71,6 @@ WORKDIR ${DEFAULT_DIR}
 
 # clone lastest source code, download and build thirdparty
 COPY starrocks ${DEFAULT_DIR}/starrocks
-
-RUN cd ${DEFAULT_DIR}/starrocks/thirdparty && /bin/bash build-thirdparty.sh \
-  && mv ${DEFAULT_DIR}/starrocks/thirdparty ${DEFAULT_DIR} \
-  && rm -rf ${DEFAULT_DIR}/starrocks 
-
+COPY install.sh ${DEFAULT_DIR}/
 CMD top
+# CMD ${DEFAULT_DIR}/install.sh

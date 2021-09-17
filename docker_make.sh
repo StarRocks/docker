@@ -12,7 +12,7 @@ if [ ${#RUNNING} != 1 ]; then
     echo "======= $CONTAINER_NAME_TOOLCHAIN is exist."
     exit 1
 else 
-    echo "======= $CONTAINER_NAME_TOOLCHAIN will be built."
+    echo "======= $CONTAINER_NAME_TOOLCHAIN will run."
 fi
 
 wget -O jdk.rpm "$JDK_RPM_SOURCE"
@@ -41,8 +41,6 @@ if [[ ! -f "jdk.rpm" ]]; then
     echo "jdk not found"
     exit 1
 fi
-
-source starrocks/thirdparty/vars.sh
 
 copy_num=$(sed -n  '/===== Downloading thirdparty archives...done/=' starrocks/thirdparty/download-thirdparty.sh)
 if [[ copy_num == 0 ]]; then
@@ -73,10 +71,13 @@ docker build \
 echo "========== build $IMAGE_NAME_TOOLCHAIN... done"
 
 echo "========== start $CONTAINER_NAME_TOOLCHAIN..."
-
 docker run -it --name $CONTAINER_NAME_TOOLCHAIN -d starrocks/$IMAGE_NAME_TOOLCHAIN:$IMAGE_VERSION
 
-echo "========== transfer thirdparty..."
+echo "========== start to build thirdpaty..."
+
+docker exec -it $CONTAINER_NAME_TOOLCHAIN /bin/bash /var/local/install.sh
+
+echo "========== start to transfer thirdparty..."
 docker cp $CONTAINER_NAME_TOOLCHAIN:/var/local/thirdparty ../sr-thirdparty/
 rm -rf jdk.rpm
 
