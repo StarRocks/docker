@@ -1,6 +1,8 @@
 # docker 
 
 ## 文件说明
+
+```
 .
 ├── docker_make.sh      # image 构建脚本
 ├── params.sh           # 参数脚本，配置构建 image 的参数
@@ -10,7 +12,7 @@
 │   └── start.sh
 └── sr-toolchain        # toolchain image 构建文件夹
     └── Dockerfile
-
+```
 
 ## 使用方式
 
