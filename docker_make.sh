@@ -7,6 +7,13 @@ IMAGE_NAME_THIRDPARTY='thirdparty'
 
 source params.sh
 
+RUNNING=$(docker ps -a | grep $CONTAINER_NAME_TOOLCHAIN || echo 0)
+if [ ${#RUNNING} != 1 ]; then
+    echo "======= $CONTAINER_NAME_TOOLCHAIN is exist."
+else 
+    echo "======= $CONTAINER_NAME_TOOLCHAIN will be built."
+fi
+
 wget -O jdk.rpm "$JDK_RPM_SOURCE"
 
 if [[ ! -f "jdk.rpm" ]]; then
@@ -63,14 +70,6 @@ docker build \
 --build-arg BASE_URL=$BASE_URL .
 
 echo "========== build $IMAGE_NAME_TOOLCHAIN... done"
-
-RUNNING=$(docker ps -a | grep $CONTAINER_NAME_TOOLCHAIN || echo 0)
-if [ ${#RUNNING} != 1 ]; then
-    echo "======= $CONTAINER_NAME_TOOLCHAIN is exist."
-    docker rm -f $CONTAINER_NAME_TOOLCHAIN
-else 
-    echo "======= $CONTAINER_NAME_TOOLCHAIN is not exist."
-fi
 
 echo "========== start $CONTAINER_NAME_TOOLCHAIN..."
 
