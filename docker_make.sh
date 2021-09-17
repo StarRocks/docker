@@ -10,6 +10,7 @@ source params.sh
 RUNNING=$(docker ps -a | grep $CONTAINER_NAME_TOOLCHAIN || echo 0)
 if [ ${#RUNNING} != 1 ]; then
     echo "======= $CONTAINER_NAME_TOOLCHAIN is exist."
+    exit 1
 else 
     echo "======= $CONTAINER_NAME_TOOLCHAIN will be built."
 fi
