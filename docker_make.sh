@@ -5,7 +5,7 @@ curdir=`cd "$curdir"; pwd`
 IMAGE_NAME_TOOLCHAIN='toolchain'
 IMAGE_NAME_THIRDPARTY='thirdparty'
 
-source params.sh
+source $curdir/params.sh
 
 RUNNING=$(docker ps -a | grep $CONTAINER_NAME_TOOLCHAIN || echo 0)
 if [ ${#RUNNING} != 1 ]; then

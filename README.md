@@ -1,5 +1,7 @@
 # docker 
 
+> 使用该脚本构建需要有 root 权限，或者使用用户在 机器的 docker 组内
+
 ## 文件说明
 
 ```
@@ -14,7 +16,7 @@
     └── Dockerfile
     └── install.sh    
 ```
-## 构建流程
+## 构建流程简介
 
 1. 构建 image `starrocks/toolchain`
 2. 启动 `starrocks/toolchain` container， container 中执行 `starrocks` 代码中 `thirdparty` 相关脚本，构建 `starrocks` 的编译环境
