@@ -14,6 +14,9 @@ IMAGE_VERSION=$GIT_BRANCH
 ## JDK
 JDK_RPM_SOURCE='http://starrocks-thirdparty.oss-cn-zhangjiakou.aliyuncs.com/jdk.rpm'
 
+## llvm
+LLVM_SOURCE='http://starrocks-thirdparty.oss-cn-zhangjiakou.aliyuncs.com/clang-llvm.tar.xz'
+
 ## GCC
 GCC_VERSION=10.3.0
 GCC_URL=https://mirrors.ustc.edu.cn/gnu/gcc/gcc-$GCC_VERSION

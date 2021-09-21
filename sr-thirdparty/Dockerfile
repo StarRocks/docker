@@ -70,7 +70,7 @@ ENV MAVEN_HOME /usr/share/maven
 # build environment
 WORKDIR ${DEFAULT_DIR}
 
-COPY thirdparty.zip ${DEFAULT_DIR}/ 
+COPY thirdparty.tar.xz ${DEFAULT_DIR}/ 
 
 # ccache
 RUN yum install -y epel-release && yum install -y ccache 
@@ -81,4 +81,6 @@ ENV STARROCKS_GCC_HOME /usr
 
 WORKDIR ${DEFAULT_DIR}
 COPY start.sh ${DEFAULT_DIR}/
+COPY clang-llvm.tar.xz ${DEFAULT_DIR}/
+ENV PATH "$PATH:/var/local/llvm/bin"
 CMD /var/local/start.sh

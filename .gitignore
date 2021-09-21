@@ -1,7 +1,9 @@
 sr-toolchain/starrocks
 sr-toolchain/jdk.rpm
 sr-thirdparty/jdk.rpm
+sr-thirdparty/clang-llvm.tar.xz
 sr-thirdparty/thirdparty.zip
+sr-thirdparty/thirdparty.tar.xz
 sr-thirdparty/thirdparty
 .vscode
 jdk.rpm
