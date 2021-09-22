@@ -104,16 +104,17 @@ if [[ ! -f "clang-llvm.tar.xz" ]]; then
     exit 1
 fi
 
+wget -O cmake.tar "$CMAKE_SOURCE"
+rm -rf cmake && mkdir cmake && tar -xvf cmake.tar -C cmake --strip-components 1
+rm -rf cmake.tar
+
+docker cp $CONTAINER_NAME_TOOLCHAIN:/usr/share/maven ../sr-thirdparty/
+
 echo "========== start to build $IMAGE_NAME_THIRDPARTY..."
 
 docker build -t starrocks/$IMAGE_NAME_THIRDPARTY:$IMAGE_VERSION \
 --build-arg GCC_VERSION=$GCC_VERSION \
---build-arg GCC_URL=$GCC_URL \
---build-arg CMAKE_VERSION=$CMAKE_VERSION \
---build-arg CMAKE_DOWNLOAD_URL=$CMAKE_DOWNLOAD_URL \
---build-arg MAVEN_VERSION=$MAVEN_VERSION \
---build-arg SHA=$SHA \
---build-arg BASE_URL=$BASE_URL .
+--build-arg GCC_URL=$GCC_URL .
 
 echo "========== build $IMAGE_NAME_THIRDPARTY done..."
 

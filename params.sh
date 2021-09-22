@@ -17,6 +17,9 @@ JDK_RPM_SOURCE='http://starrocks-thirdparty.oss-cn-zhangjiakou.aliyuncs.com/jdk.
 ## llvm
 LLVM_SOURCE='http://starrocks-thirdparty.oss-cn-zhangjiakou.aliyuncs.com/clang-llvm.tar.xz'
 
+## CMAKE
+CMAKE_SOURCE='https://github.com/Kitware/CMake/releases/download/v3.16.3/cmake-3.16.3-Linux-x86_64.tar.gz'
+
 ## GCC
 GCC_VERSION=10.3.0
 GCC_URL=https://mirrors.ustc.edu.cn/gnu/gcc/gcc-$GCC_VERSION

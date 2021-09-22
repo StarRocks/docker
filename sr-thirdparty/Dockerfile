@@ -6,7 +6,8 @@ ARG GCC_VERSION
 ARG GCC_URL
 
 # install dependencies and build gcc
-RUN yum install -y bzip2 wget git gcc-c++ libstdc++-static byacc flex automake libtool binutils-devel bison ncurses-devel make mlocate unzip patch which vim-common redhat-lsb-core zip libcurl-devel \
+RUN yum install -y epel-release bzip2 wget git gcc-c++ libstdc++-static byacc flex automake libtool binutils-devel bison ncurses-devel make mlocate unzip patch which vim-common redhat-lsb-core zip libcurl-devel \
+  && yum install -y ccache \
   && updatedb \
   && yum -y clean all \
   && rm -rf /var/cache/yum \
@@ -20,19 +21,6 @@ RUN yum install -y bzip2 wget git gcc-c++ libstdc++-static byacc flex automake l
   && make -j$[$(nproc)/4+1] && make install \
   && rm -rf /var/local/gcc \
   && rm -f /tmp/gcc.tar.gz
-
-
-# build cmake
-ARG CMAKE_VERSION
-ARG CMAKE_DOWNLOAD_URL
-RUN mkdir -p /tmp/cmake && curl -fsSL -o /tmp/cmake.tar.gz ${CMAKE_DOWNLOAD_URL} \
-    && tar -zxf /tmp/cmake.tar.gz -C /tmp/cmake --strip-components=1 \
-    && cd /tmp/cmake \
-    && ./bootstrap --system-curl \
-    && gmake -j$[$(nproc)/4+1] \
-    && gmake install \
-    && rm -rf /tmp/cmake.tar.gz \
-    && rm -rf /tmp/cmake
 
 # install jdk
 COPY ./jdk.rpm ./
@@ -53,27 +41,10 @@ RUN touch  ${DEFAULT_DIR}/install_jdk.sh \
 
 ENV JAVA_HOME /usr/java/jdk
 
-
-ARG MAVEN_VERSION
-ARG SHA
-ARG BASE_URL
-
-RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
-  && curl -fsSL -o /tmp/apache-maven.tar.gz ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
-  && echo "${SHA}  /tmp/apache-maven.tar.gz" | sha512sum -c - \
-  && tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 \
-  && rm -f /tmp/apache-maven.tar.gz \
-  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
-
-ENV MAVEN_HOME /usr/share/maven
-
 # build environment
 WORKDIR ${DEFAULT_DIR}
 
 COPY thirdparty.tar.xz ${DEFAULT_DIR}/ 
-
-# ccache
-RUN yum install -y epel-release && yum install -y ccache 
 
 # env
 ENV STARROCKS_THIRDPARTY /var/local/thirdparty
@@ -83,4 +54,14 @@ WORKDIR ${DEFAULT_DIR}
 COPY start.sh ${DEFAULT_DIR}/
 COPY clang-llvm.tar.xz ${DEFAULT_DIR}/
 ENV PATH "$PATH:/var/local/llvm/bin"
+
+# maven
+COPY maven /usr/share/maven
+RUN ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+ENV MAVEN_HOME /usr/share/maven
+
+# cmake
+COPY cmake /usr/share/cmake
+RUN ln -s /usr/share/cmake/bin/cmake /usr/bin/cmake
+
 CMD /var/local/start.sh
