@@ -87,9 +87,6 @@ if [[ ! -d "thirdparty" ]]; then
     exit 1
 fi
 rm -rf thirdparty/src
-rm -rf thirdparty.tar.xz
-tar -cJvf thirdparty.tar.xz thirdparty
-rm -rf thirdparty
 
 cp ../jdk.rpm .
 if [[ ! -f "jdk.rpm" ]]; then
@@ -103,6 +100,8 @@ if [[ ! -f "clang-llvm.tar.xz" ]]; then
     echo "clang-llvm.tar.xz found"
     exit 1
 fi
+
+mkdir llvm && tar -xvJf clang-llvm.tar.xz -C llvm --strip-components 1
 
 wget -O cmake.tar "$CMAKE_SOURCE"
 rm -rf cmake && mkdir cmake && tar -xvf cmake.tar -C cmake --strip-components 1

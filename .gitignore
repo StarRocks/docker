@@ -7,5 +7,6 @@ sr-thirdparty/thirdparty.tar.xz
 sr-thirdparty/thirdparty
 sr-thirdparty/cmake
 sr-thirdparty/maven
+sr-thirdparty/llvm
 .vscode
 jdk.rpm

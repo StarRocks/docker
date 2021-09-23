@@ -44,15 +44,15 @@ ENV JAVA_HOME /usr/java/jdk
 # build environment
 WORKDIR ${DEFAULT_DIR}
 
-COPY thirdparty.tar.xz ${DEFAULT_DIR}/ 
+COPY thirdparty ${DEFAULT_DIR}/thirdparty 
 
 # env
 ENV STARROCKS_THIRDPARTY /var/local/thirdparty
 ENV STARROCKS_GCC_HOME /usr
 
 WORKDIR ${DEFAULT_DIR}
-COPY start.sh ${DEFAULT_DIR}/
-COPY clang-llvm.tar.xz ${DEFAULT_DIR}/
+
+COPY llvm ${DEFAULT_DIR}/llvm
 ENV PATH "$PATH:/var/local/llvm/bin"
 
 # maven
@@ -64,4 +64,5 @@ ENV MAVEN_HOME /usr/share/maven
 COPY cmake /usr/share/cmake
 RUN ln -s /usr/share/cmake/bin/cmake /usr/bin/cmake
 
-CMD /var/local/start.sh
+# CMD /var/local/start.sh
+CMD top
