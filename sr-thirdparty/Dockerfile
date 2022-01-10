@@ -18,7 +18,7 @@ RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
 
 # JDK
 RUN yum install java-1.8.0-openjdk -y
-RUN echo "export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")" >> /etc/bashrc
+RUN echo "export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")" >> /etc/bashrc
 
 # MAVEN
 RUN yum install maven -y
