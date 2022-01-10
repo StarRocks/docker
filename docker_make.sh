@@ -3,7 +3,7 @@ curdir=`dirname "$0"`
 curdir=`cd "$curdir"; pwd`
 
 IMAGE_NAME_TOOLCHAIN='toolchain'
-IMAGE_NAME_THIRDPARTY='thirdparty'
+IMAGE_NAME_THIRDPARTY='dev-env'
 
 source $curdir/params.sh
 
@@ -111,7 +111,7 @@ docker cp $CONTAINER_NAME_TOOLCHAIN:/usr/share/maven ../sr-thirdparty/
 
 echo "========== start to build $IMAGE_NAME_THIRDPARTY..."
 
-docker build -t starrocks/$IMAGE_NAME_THIRDPARTY:$IMAGE_VERSION \
+docker build -t starrocks/$IMAGE_NAME_THIRDPARTY:$GIT_BRANCH-$IMAGE_VERSION \
 --build-arg GCC_VERSION=$GCC_VERSION \
 --build-arg GCC_URL=$GCC_URL .
 

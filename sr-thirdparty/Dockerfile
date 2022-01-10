@@ -6,7 +6,7 @@ ARG GCC_VERSION
 ARG GCC_URL
 
 # install dependencies and build gcc
-RUN yum install -y epel-release bzip2 wget git gcc-c++ libstdc++-static byacc flex automake libtool binutils-devel bison ncurses-devel make mlocate unzip patch which vim-common redhat-lsb-core zip libcurl-devel \
+RUN yum install -y epel-release python3 bzip2 wget git gcc-c++ libstdc++-static byacc flex automake libtool binutils-devel bison ncurses-devel make mlocate unzip patch which vim-common redhat-lsb-core zip libcurl-devel \
   && yum install -y ccache \
   && updatedb \
   && yum -y clean all \
