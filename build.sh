@@ -7,7 +7,7 @@ IMAGE_NAME_THIRDPARTY='thirdparty'
 
 source $curdir/params.sh
 
-image=$(docker images| grep $IMAGE_NAME_TOOLCHAIN || echo 0)
+image=$(docker images| grep $IMAGE_NAME_TOOLCHAIN | grep $IMAGE_VERSION || echo 0)
 if [ ${#image} != 1 ]; then
     echo "======= $IMAGE_NAME_TOOLCAHIN already exist, remove it mannauly if new build is needed ======="
 else 
