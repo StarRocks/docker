@@ -45,7 +45,7 @@ if [[ ! -f starrocks/thirdparty/installed/lib/mariadb/libmariadbclient.a ]]; the
 fi 
 
 echo "========== start to transfer thirdparty..."
-rm -r sr-thirdparty/thirdparty
+rm -rf sr-thirdparty/thirdparty
 cp -r $curdir/starrocks/thirdparty sr-thirdparty
 rm -r sr-thirdparty/thirdparty/src
 
