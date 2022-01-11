@@ -24,7 +24,7 @@ RUN echo "export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")
 RUN yum install maven -y
 
 # dependencies
-RUN yum install -y bzip2 wget git libstdc++-static byacc flex automake libtool binutils-devel bison ncurses-devel make mlocate unzip patch which vim-common redhat-lsb-core zip libcurl-devel\
+RUN yum install -y python3 bzip2 wget git libstdc++-static byacc flex automake libtool binutils-devel bison ncurses-devel make mlocate unzip patch which vim-common redhat-lsb-core zip libcurl-devel\
   && updatedb \
   && yum -y clean all
 
