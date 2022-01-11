@@ -13,7 +13,7 @@ RUN yum install devtoolset-10 -y
 RUN echo "source /opt/rh/devtoolset-10/enable" >> /etc/bashrc
 
 # CMAKE
-RUN yum install cmake3 -y
+RUN yum install cmake3-3.14.6 -y
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
 
 # JDK
@@ -21,7 +21,7 @@ RUN yum install java-1.8.0-openjdk -y
 RUN echo "export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")" >> /etc/bashrc
 
 # MAVEN
-RUN yum install maven -y
+RUN yum install maven-3.0.5 -y
 
 # dependencies
 RUN yum install -y python3 bzip2 wget git libstdc++-static byacc flex automake libtool binutils-devel bison ncurses-devel make mlocate unzip patch which vim-common redhat-lsb-core zip libcurl-devel\
