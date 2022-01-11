@@ -23,6 +23,7 @@ else
     echo "===== starrocks repo already exited, checkout to $GIT_BRANCH ==== "
     cd starrocks
     git checkout $GIT_BRANCH
+    git pull
     cd ..
 fi 
 
