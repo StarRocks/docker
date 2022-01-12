@@ -1,76 +1,38 @@
-FROM centos:centos7.5.1804
-
-RUN yum install -y epel-release && yum install -y ccache
+FROM docker.io/library/centos:centos7.9.2009
 
 ENV DEFAULT_DIR /var/local
 
-ARG GCC_VERSION
-ARG GCC_URL
+RUN yum install -y epel-release
 
-# install dependencies and build gcc
-RUN yum install -y bzip2 wget git gcc-c++ libstdc++-static byacc flex automake libtool binutils-devel bison ncurses-devel make mlocate unzip patch which vim-common redhat-lsb-core zip libcurl-devel \
+# CCACHE
+RUN yum install -y ccache
+
+# GCC
+RUN yum install centos-release-scl -y
+RUN yum install devtoolset-10 -y
+RUN echo "source /opt/rh/devtoolset-10/enable" >> /etc/bashrc
+
+# LLVM
+RUN yum install llvm-toolset-7.0 -y
+RUN echo "source /opt/rh/llvm-toolset-7.0/enable" >> /etc/bashrc
+
+# CMAKE
+RUN yum install cmake3 -y
+RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
+
+# JDK
+RUN yum install java-1.8.0-openjdk -y
+RUN echo "export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")" >> /etc/bashrc
+
+# MAVEN
+RUN yum install maven -y
+
+# dependencies
+RUN yum install -y python3 bzip2 wget git libstdc++-static byacc flex automake libtool binutils-devel bison ncurses-devel make mlocate unzip patch which vim-common redhat-lsb-core zip libcurl-devel\
   && updatedb \
-  && yum -y clean all \
-  && rm -rf /var/cache/yum \
-  && mkdir -p  /var/local/gcc \
-  && curl -fsSL -o /tmp/gcc.tar.gz  ${GCC_URL}/gcc-${GCC_VERSION}.tar.gz \
-  && tar -xzf /tmp/gcc.tar.gz -C /var/local/gcc --strip-components=1 \
-  && cd /var/local/gcc \
-  && sed -i 's/ftp:\/\/gcc.gnu.org\/pub\/gcc\/infrastructure\//http:\/\/mirror.linux-ia64.org\/gnu\/gcc\/infrastructure\//g' contrib/download_prerequisites \
-  && ./contrib/download_prerequisites \
-  && ./configure --disable-multilib --enable-languages=c,c++ --prefix=/usr \
-  && make -j$[$(nproc)/4+1] && make install \
-  && rm -rf /var/local/gcc \
-  && rm -f /tmp/gcc.tar.gz
-  
-ENV STARROCKS_GCC_HOME /usr
-# build cmake
-ARG CMAKE_VERSION
-ARG CMAKE_DOWNLOAD_URL
-RUN mkdir -p /tmp/cmake && curl -fsSL -o /tmp/cmake.tar.gz ${CMAKE_DOWNLOAD_URL} \
-    && tar -zxf /tmp/cmake.tar.gz -C /tmp/cmake --strip-components=1 \
-    && cd /tmp/cmake \
-    && ./bootstrap --system-curl \
-    && gmake -j$[$(nproc)/4+1] \
-    && gmake install \
-    && rm -rf /tmp/cmake.tar.gz \
-    && rm -rf /tmp/cmake
-
-# install jdk
-COPY ./jdk.rpm ./
-RUN touch  ${DEFAULT_DIR}/install_jdk.sh \
-    && echo '#!/bin/bash' >> ${DEFAULT_DIR}/install_jdk.sh \
-    && echo 'rpm -Uvh jdk.rpm > /dev/null 2>&1' >>  ${DEFAULT_DIR}/install_jdk.sh \
-    && echo 'mv /usr/java/jdk* /usr/java/jdk' >>  ${DEFAULT_DIR}/install_jdk.sh \
-    && echo 'export JAVA_HOME=/usr/java/jdk' >>  ${DEFAULT_DIR}/install_jdk.sh \
-    && echo 'echo "export JAVA_HOME=/usr/java/jdk" >> /etc/environment' >>  ${DEFAULT_DIR}/install_jdk.sh \
-    && echo 'export JRE_HOME=/usr/java/jdk/jre' >>  ${DEFAULT_DIR}/install_jdk.sh \
-    && echo 'echo "export JRE_HOME=/usr/java/jdk/jre" >> /etc/environment' >>  ${DEFAULT_DIR}/install_jdk.sh \
-    && echo 'ls /usr/java/jdk > /dev/null 2>&1' >>  ${DEFAULT_DIR}/install_jdk.sh \
-    && echo 'echo "export JAVA_HOME=/usr/java/jdk" >> /root/.bashrc' >> ${DEFAULT_DIR}/install_jdk.sh \
-    && chmod 777 ${DEFAULT_DIR}/install_jdk.sh \
-    && /bin/bash ${DEFAULT_DIR}/install_jdk.sh \
-    && rm -rf *.rpm \
-    && rm ${DEFAULT_DIR}/install_jdk.sh
-ENV JAVA_HOME /usr/java/jdk
-
-
-ARG MAVEN_VERSION
-ARG SHA
-ARG BASE_URL
-RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
-  && curl -fsSL -o /tmp/apache-maven.tar.gz ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
-  && echo "${SHA}  /tmp/apache-maven.tar.gz" | sha512sum -c - \
-  && tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 \
-  && rm -f /tmp/apache-maven.tar.gz \
-  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
-ENV MAVEN_HOME /usr/share/maven
+  && yum -y clean all
 
 # build environment
 WORKDIR ${DEFAULT_DIR}
 
-# clone lastest source code, download and build thirdparty
-COPY starrocks ${DEFAULT_DIR}/starrocks
-COPY install.sh ${DEFAULT_DIR}/
 CMD top
-# CMD ${DEFAULT_DIR}/install.sh
