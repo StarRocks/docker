@@ -6,15 +6,16 @@
 
 ```
 .
-├── docker_make.sh      # image 构建脚本
-├── params.sh           # 参数脚本，配置构建 image 的参数
 ├── README.md
-├── sr-thirdparty       # thirdparty image 构建文件夹
-│   ├── Dockerfile
-│   └── start.sh
-└── sr-toolchain        # toolchain image 构建文件夹
-    └── Dockerfile
-    └── install.sh    
+├── build-thirdparty.sh    # thirdparty image 构建脚本
+├── build-toolchain.sh     # toolchain image 构建脚本
+├── build.sh               # 构建脚本，自动构建 toolchain 和 thirdparty image
+├── params.sh              # 参数脚本，配置构建 image 的参数          # 
+├── sr-thirdparty          # thirdparty image 构建文件夹
+│   └── Dockerfile
+└── sr-toolchain           # toolchain image 构建文件夹
+    ├── Dockerfile
+    └── build-thirdparty.sh
 ```
 ## 构建流程简介
 
@@ -25,7 +26,7 @@
 ## 构建对应版本编译环境的 `starrocks/thirdparty` 镜像的方法
 
 1. 修改 params.sh 中的配置
-2. 执行 docker_make.sh
+2. 执行 build.sh
 
 ## 使用 `starrocks/thirdparty` 进行 `starrocks` 的编译的方法
 
