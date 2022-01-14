@@ -55,6 +55,8 @@ WORKDIR ${DEFAULT_DIR}
 COPY llvm ${DEFAULT_DIR}/llvm
 ENV PATH "$PATH:/var/local/llvm/bin"
 
+ENV PATH "$PATH:/usr/java/jdk/bin"
+
 # maven
 COPY maven /usr/share/maven
 RUN ln -s /usr/share/maven/bin/mvn /usr/bin/mvn

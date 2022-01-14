@@ -101,7 +101,9 @@ if [[ ! -f "clang-llvm.tar.xz" ]]; then
     exit 1
 fi
 
-mkdir llvm && tar -xvJf clang-llvm.tar.xz -C llvm --strip-components 1
+# mkdir llvm && tar -xvJf clang-llvm.tar.xz -C llvm --strip-components 1
+
+mkdir -p llvm/bin && cp /home/disk1/doris-deps/toolchain/installed/llvm-10.0.1/bin/clang-format llvm/bin
 
 wget -O cmake.tar "$CMAKE_SOURCE"
 rm -rf cmake && mkdir cmake && tar -xvf cmake.tar -C cmake --strip-components 1
