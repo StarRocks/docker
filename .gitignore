@@ -10,3 +10,4 @@ sr-thirdparty/maven
 sr-thirdparty/llvm
 .vscode
 jdk.rpm
+starrocks
