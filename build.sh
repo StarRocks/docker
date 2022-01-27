@@ -27,11 +27,6 @@ else
     cd ..
 fi 
 
-if [[ ! -f "starrocks/thirdparty/vars.sh" ]]; then
-    echo "vars.sh not found"
-    exit 1
-fi
-
 echo "====== start $CONTAINER_NAME_TOOLCHAIN ======"
 docker run -it --name $CONTAINER_NAME_TOOLCHAIN -d -v $curdir/starrocks:/var/local/starrocks starrocks/$IMAGE_NAME_TOOLCHAIN:$IMAGE_VERSION
 docker cp $curdir/sr-toolchain/build-thirdparty.sh $CONTAINER_NAME_TOOLCHAIN:/var/local

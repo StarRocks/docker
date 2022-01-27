@@ -2,6 +2,9 @@ FROM docker.io/library/centos:centos7.9.2009
 
 ENV DEFAULT_DIR /var/local
 
+ADD clang_llvm ${DEFAULT_DIR}/clang_llvm
+ENV PATH=${PATH}:${DEFAULT_DIR}/clang_llvm/bin
+
 RUN yum install -y epel-release
 
 # CCACHE
@@ -11,10 +14,6 @@ RUN yum install -y ccache
 RUN yum install centos-release-scl -y
 RUN yum install devtoolset-10 -y
 RUN echo "source /opt/rh/devtoolset-10/enable" >> /etc/bashrc
-
-# LLVM
-RUN yum install llvm-toolset-7.0 -y
-RUN echo "source /opt/rh/llvm-toolset-7.0/enable" >> /etc/bashrc
 
 # CMAKE
 RUN yum install cmake3 -y
