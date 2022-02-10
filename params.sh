@@ -1,13 +1,13 @@
 # container name
 
-CONTAINER_NAME_TOOLCHAIN='con_chain-1'
+CONTAINER_NAME_TOOLCHAIN='con_chain_1'
 CONTAINER_NAME_THIRDPARTY='con_thirdparty'
 
 # dependency
 
 ## git repo
 GIT_REPO='https://github.com/StarRocks/starrocks.git'
-GIT_BRANCH='main'
+GIT_BRANCH='branch-2.1'
 
 IMAGE_VERSION='v1'
 
@@ -18,15 +18,15 @@ JDK_RPM_SOURCE='http://starrocks-thirdparty.oss-cn-zhangjiakou.aliyuncs.com/jdk.
 LLVM_SOURCE='http://starrocks-thirdparty.oss-cn-zhangjiakou.aliyuncs.com/clang-llvm.tar.xz'
 
 ## CMAKE
-CMAKE_SOURCE='https://github.com/Kitware/CMake/releases/download/v3.16.3/cmake-3.16.3-Linux-x86_64.tar.gz'
+CMAKE_SOURCE='https://github.com/Kitware/CMake/releases/download/v3.22.2/cmake-3.22.2-Linux-x86_64.tar.gz'
 
 ## GCC
 GCC_VERSION=10.3.0
 GCC_URL="https://mirrors.ustc.edu.cn/gnu/gcc/gcc-$GCC_VERSION"
 
 ## CMAKE
-CMAKE_VERSION=3.16.3
-CMAKE_DOWNLOAD_URL="https://cmake.org/files/v3.16/cmake-$CMAKE_VERSION.tar.gz"
+CMAKE_VERSION=3.22.2
+CMAKE_DOWNLOAD_URL='https://cmake.org/files/v3.22/cmake-3.22.2-linux-x86_64.tar.gz'
 
 ## MAVEN
 MAVEN_VERSION=3.6.3

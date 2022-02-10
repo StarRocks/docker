@@ -42,6 +42,10 @@ if [[ ! -f "jdk.rpm" ]]; then
     exit 1
 fi
 
+wget -O cmake.tar "$CMAKE_SOURCE"
+rm -rf cmake && mkdir cmake && tar -xvf cmake.tar -C cmake --strip-components 1
+rm -rf cmake.tar
+
 copy_num=$(sed -n  '/===== Downloading thirdparty archives...done/=' starrocks/thirdparty/download-thirdparty.sh)
 if [[ copy_num == 0 ]]; then
     echo "===== cannot generate download scripts"
@@ -73,7 +77,7 @@ echo "========== build $IMAGE_NAME_TOOLCHAIN... done"
 echo "========== start $CONTAINER_NAME_TOOLCHAIN..."
 docker run -it --name $CONTAINER_NAME_TOOLCHAIN -d starrocks/$IMAGE_NAME_TOOLCHAIN:$IMAGE_VERSION
 
-echo "========== start to build thirdpaty..."
+echo "========== start to build thirdparty..."
 
 docker exec -it $CONTAINER_NAME_TOOLCHAIN /bin/bash /var/local/install.sh
 

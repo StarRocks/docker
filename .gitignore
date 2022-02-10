@@ -1,4 +1,5 @@
 sr-toolchain/starrocks
+sr-toolchain/cmake
 sr-toolchain/jdk.rpm
 sr-thirdparty/jdk.rpm
 sr-thirdparty/clang-llvm.tar.xz

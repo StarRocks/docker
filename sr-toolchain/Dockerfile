@@ -25,16 +25,19 @@ RUN yum install -y bzip2 wget git gcc-c++ libstdc++-static byacc flex automake l
   
 ENV STARROCKS_GCC_HOME /usr
 # build cmake
+
+COPY cmake /usr/share/cmake
+RUN ln -s /usr/share/cmake/bin/cmake /usr/bin/cmake
 ARG CMAKE_VERSION
 ARG CMAKE_DOWNLOAD_URL
-RUN mkdir -p /tmp/cmake && curl -fsSL -o /tmp/cmake.tar.gz ${CMAKE_DOWNLOAD_URL} \
-    && tar -zxf /tmp/cmake.tar.gz -C /tmp/cmake --strip-components=1 \
-    && cd /tmp/cmake \
-    && ./bootstrap --system-curl \
-    && gmake -j$[$(nproc)/4+1] \
-    && gmake install \
-    && rm -rf /tmp/cmake.tar.gz \
-    && rm -rf /tmp/cmake
+# RUN mkdir -p /tmp/cmake && curl -fsSL -o /tmp/cmake.tar.gz ${CMAKE_DOWNLOAD_URL} \
+#     && tar -zxf /tmp/cmake.tar.gz -C /tmp/cmake --strip-components=1 \
+#     && cd /tmp/cmake \
+#     && ./bootstrap --system-curl \
+#     && gmake -j$[$(nproc)/4+1] \
+#     && gmake install \
+#     && rm -rf /tmp/cmake.tar.gz \
+#     && rm -rf /tmp/cmake
 
 # install jdk
 COPY ./jdk.rpm ./
@@ -53,7 +56,7 @@ RUN touch  ${DEFAULT_DIR}/install_jdk.sh \
     && rm -rf *.rpm \
     && rm ${DEFAULT_DIR}/install_jdk.sh
 ENV JAVA_HOME /usr/java/jdk
-
+# ENV https_proxy "http://172.26.92.139:28888"
 
 ARG MAVEN_VERSION
 ARG SHA
