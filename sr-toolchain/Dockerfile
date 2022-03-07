@@ -56,7 +56,7 @@ RUN touch  ${DEFAULT_DIR}/install_jdk.sh \
     && rm -rf *.rpm \
     && rm ${DEFAULT_DIR}/install_jdk.sh
 ENV JAVA_HOME /usr/java/jdk
-# ENV https_proxy "http://172.26.92.139:28888"
+ENV https_proxy "http://172.26.92.139:28888"
 
 ARG MAVEN_VERSION
 ARG SHA

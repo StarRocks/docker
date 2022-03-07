@@ -7,7 +7,7 @@ CONTAINER_NAME_THIRDPARTY='con_thirdparty'
 
 ## git repo
 GIT_REPO='https://github.com/StarRocks/starrocks.git'
-GIT_BRANCH='branch-2.1'
+GIT_BRANCH='branch-2.0'
 
 IMAGE_VERSION='v1'
 
