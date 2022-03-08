@@ -7,6 +7,9 @@ IMAGE_NAME_THIRDPARTY='dev-env'
 
 source $curdir/params.sh
 
+echo "======= proxy is $PROXY"
+export https_proxy=$PROXY
+
 RUNNING=$(docker ps -a | grep $CONTAINER_NAME_TOOLCHAIN || echo 0)
 if [ ${#RUNNING} != 1 ]; then
     echo "======= $CONTAINER_NAME_TOOLCHAIN is exist."
@@ -65,6 +68,7 @@ echo "========== start to build $IMAGE_NAME_TOOLCHAIN..."
 cd sr-toolchain
 docker build \
 -t starrocks/$IMAGE_NAME_TOOLCHAIN:$IMAGE_VERSION \
+--build-arg PROXY=$PROXY \
 --build-arg GCC_VERSION=$GCC_VERSION \
 --build-arg GCC_URL=$GCC_URL \
 --build-arg MAVEN_VERSION=$MAVEN_VERSION \
@@ -107,12 +111,11 @@ rm -rf thirdparty/src
 
 mkdir -p llvm/bin && cp /home/disk1/doris-deps/toolchain/installed/llvm-10.0.1/bin/clang-format llvm/bin
 
-docker cp $CONTAINER_NAME_TOOLCHAIN:/usr/share/maven ../sr-thirdparty/
-
 echo "========== start to build $IMAGE_NAME_THIRDPARTY..."
 
 docker build \
 -t starrocks/$IMAGE_NAME_THIRDPARTY:$GIT_BRANCH-$IMAGE_VERSION \
+--build-arg PROXY=$PROXY \
 --build-arg GCC_VERSION=$GCC_VERSION \
 --build-arg GCC_URL=$GCC_URL \
 --build-arg MAVEN_VERSION=$MAVEN_VERSION \
