@@ -1,6 +1,5 @@
 FROM docker.io/library/centos:centos7.9.2009
 
-ARG JDK_SOURCE
 ENV DEFAULT_DIR /var/local
 
 ARG GCC_VERSION
@@ -32,16 +31,17 @@ WORKDIR ${DEFAULT_DIR}
 COPY llvm ${DEFAULT_DIR}/llvm
 ENV PATH "$PATH:/var/local/llvm/bin"
 
-ENV PATH "$PATH:/usr/java/jdk/bin"
 
-# maven
-COPY maven /usr/share/maven
-RUN ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+ARG BASE_URL
+ARG MAVEN_VERSION
+ARG SHA
+
+COPY ./install_mvn.sh ${DEFAULT_DIR}/
+RUN /bin/bash ${DEFAULT_DIR}/install_mvn.sh ${BASE_URL} ${MAVEN_VERSION} ${SHA}
 ENV MAVEN_HOME /usr/share/maven
 
 # cmake
 COPY cmake /usr/share/cmake
 RUN ln -s /usr/share/cmake/bin/cmake /usr/bin/cmake
 
-# CMD /var/local/start.sh
 CMD top
