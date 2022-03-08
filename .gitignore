@@ -8,6 +8,10 @@ sr-thirdparty/thirdparty.tar.xz
 sr-thirdparty/thirdparty
 sr-thirdparty/cmake
 sr-thirdparty/maven
+sr-thirdparty/java.tar.gz
+sr-toolchain/java.tar.gz
 sr-thirdparty/llvm
 .vscode
 jdk.rpm
+java.tar.gz
+cmake

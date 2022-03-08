@@ -7,12 +7,12 @@ CONTAINER_NAME_THIRDPARTY='con_thirdparty'
 
 ## git repo
 GIT_REPO='https://github.com/StarRocks/starrocks.git'
-GIT_BRANCH='branch-2.0'
+GIT_BRANCH='main'
 
 IMAGE_VERSION='v1'
 
 ## JDK
-JDK_RPM_SOURCE='http://starrocks-thirdparty.oss-cn-zhangjiakou.aliyuncs.com/jdk.rpm'
+JDK_SOURCE='https://cdn-thirdparty.starrocks.com/java-se-8u41-ri.tar.gz'
 
 ## llvm
 LLVM_SOURCE='http://starrocks-thirdparty.oss-cn-zhangjiakou.aliyuncs.com/clang-llvm.tar.xz'
@@ -23,10 +23,6 @@ CMAKE_SOURCE='https://github.com/Kitware/CMake/releases/download/v3.22.2/cmake-3
 ## GCC
 GCC_VERSION=10.3.0
 GCC_URL="https://mirrors.ustc.edu.cn/gnu/gcc/gcc-$GCC_VERSION"
-
-## CMAKE
-CMAKE_VERSION=3.22.2
-CMAKE_DOWNLOAD_URL='https://cmake.org/files/v3.22/cmake-3.22.2-linux-x86_64.tar.gz'
 
 ## MAVEN
 MAVEN_VERSION=3.6.3
