@@ -15,7 +15,7 @@ IMAGE_VERSION='v1'
 JDK_SOURCE='https://cdn-thirdparty.starrocks.com/java-se-8u41-ri.tar.gz'
 
 ## llvm
-LLVM_SOURCE='http://starrocks-thirdparty.oss-cn-zhangjiakou.aliyuncs.com/clang-llvm.tar.xz'
+LLVM_SOURCE='http://cdn-thirdparty.starrocks.com/clang-format'
 
 ## CMAKE
 CMAKE_SOURCE='https://github.com/Kitware/CMake/releases/download/v3.22.2/cmake-3.22.2-Linux-x86_64.tar.gz'

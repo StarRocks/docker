@@ -101,7 +101,7 @@ cp install_env_gcc.sh sr-thirdparty/
 cp install_java.sh sr-thirdparty/
 cp install_mvn.sh sr-thirdparty/
 
-# # build thirdparty
+# build thirdparty
 cd sr-thirdparty
 if [[ ! -d "thirdparty" ]]; then
     echo "thirdparty not found"
@@ -109,7 +109,9 @@ if [[ ! -d "thirdparty" ]]; then
 fi
 rm -rf thirdparty/src
 
-mkdir -p llvm/bin && cp /home/disk1/doris-deps/toolchain/installed/llvm-10.0.1/bin/clang-format llvm/bin
+mkdir -p llvm/bin
+wget -O llvm/bin/clang-format "$LLVM_SOURCE"
+chmod +x llvm/bin/clang-format
 
 echo "========== start to build $IMAGE_NAME_THIRDPARTY..."
 
