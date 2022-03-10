@@ -5,7 +5,15 @@ curdir=`cd "$curdir"; pwd`
 IMAGE_NAME_TOOLCHAIN='toolchain'
 IMAGE_NAME_THIRDPARTY='dev-env'
 
-source $curdir/params.sh
+MACHINE_TYPE=$(uname -m)
+
+echo "======= build image on $MACHINE_TYPE."
+
+PARAMS_TARGET=params_source_$MACHINE_TYPE.sh
+echo "$PARAMS_TARGET"
+
+source $curdir/params_common.sh
+source $curdir/$PARAMS_TARGET
 
 echo "======= proxy is $PROXY"
 export https_proxy=$PROXY
@@ -49,9 +57,9 @@ if [[ ! -f "sr-toolchain/java.tar.gz" ]]; then
 fi
 
 cp -r cmake sr-toolchain/
-cp install_env_gcc.sh sr-toolchain/
-cp install_java.sh sr-toolchain/
-cp install_mvn.sh sr-toolchain/
+cp install_env_gcc_$MACHINE_TYPE.sh sr-toolchain/install_env_gcc.sh
+cp install_java_$MACHINE_TYPE.sh sr-toolchain/install_java.sh
+cp install_mvn_$MACHINE_TYPE.sh sr-toolchain/install_mvn.sh
 
 copy_num=$(sed -n  '/===== Downloading thirdparty archives...done/=' sr-toolchain/starrocks/thirdparty/download-thirdparty.sh)
 if [[ copy_num == 0 ]]; then
@@ -97,9 +105,9 @@ if [[ ! -f "sr-thirdparty/java.tar.gz" ]]; then
 fi
 
 cp -r cmake sr-thirdparty/
-cp install_env_gcc.sh sr-thirdparty/
-cp install_java.sh sr-thirdparty/
-cp install_mvn.sh sr-thirdparty/
+cp install_env_gcc_$MACHINE_TYPE.sh sr-thirdparty/install_env_gcc.sh
+cp install_java_$MACHINE_TYPE.sh sr-thirdparty/install_java.sh
+cp install_mvn_$MACHINE_TYPE.sh sr-thirdparty/install_mvn.sh
 
 # build thirdparty
 cd sr-thirdparty
