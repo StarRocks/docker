@@ -1,6 +1,7 @@
 #!/bin/bash
-yum install -y epel-release && yum install -y ccache
-yum install -y bzip2 wget git gcc-c++ libstdc++-static byacc flex automake libtool binutils-devel bison ncurses-devel make mlocate unzip patch which vim-common redhat-lsb-core zip libcurl-devel updatedb ccache
+yum install -y epel-release
+yum install -y ccache python3
+yum install -y bzip2 wget git gcc-c++ libstdc++-static byacc flex automake libtool binutils-devel bison ncurses-devel make mlocate unzip patch which vim-common redhat-lsb-core zip libcurl-devel updatedb
 yum -y clean all
 rm -rf /var/cache/yum
 mkdir -p  /var/local/gcc
