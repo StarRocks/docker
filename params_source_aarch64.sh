@@ -1,15 +1,15 @@
 ## JDK
-JDK_SOURCE='https://cdn-thirdparty.starrocks.com/java-se-8u41-ri.tar.gz'
+JDK_SOURCE='https://mirror.iscas.ac.cn/kunpeng/archive/compiler/bisheng_jdk/bisheng-jdk-8u262-linux-aarch64.tar.gz'
 
 ## llvm
 LLVM_SOURCE='http://cdn-thirdparty.starrocks.com/clang-format'
 
 ## CMAKE
-CMAKE_SOURCE='https://github.com/Kitware/CMake/releases/download/v3.22.2/cmake-3.22.2-Linux-x86_64.tar.gz'
+CMAKE_SOURCE='https://github.com/Kitware/CMake/releases/download/v3.22.2/cmake-3.22.2-linux-aarch64.tar.gz'
 
 ## GCC
-GCC_VERSION=10.3.0
-GCC_URL="https://mirrors.ustc.edu.cn/gnu/gcc/gcc-$GCC_VERSION"
+GCC_VERSION=10.3.1
+GCC_URL="https://mirror.iscas.ac.cn/kunpeng/archive/compiler/kunpeng_gcc/gcc-$GCC_VERSION-2021.09-aarch64-linux.tar.gz"
 
 ## MAVEN
 MAVEN_VERSION=3.6.3
