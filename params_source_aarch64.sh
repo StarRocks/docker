@@ -2,7 +2,7 @@
 JDK_SOURCE='https://mirror.iscas.ac.cn/kunpeng/archive/compiler/bisheng_jdk/bisheng-jdk-8u262-linux-aarch64.tar.gz'
 
 ## llvm
-LLVM_SOURCE='http://cdn-thirdparty.starrocks.com/clang-format'
+LLVM_SOURCE='http://cdn-thirdparty.starrocks.com/aarch64/clang-format'
 
 ## CMAKE
 CMAKE_SOURCE='https://github.com/Kitware/CMake/releases/download/v3.22.2/cmake-3.22.2-linux-aarch64.tar.gz'
