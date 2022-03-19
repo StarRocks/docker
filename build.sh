@@ -93,6 +93,7 @@ echo "========== start to build thirdparty..."
 docker exec -it $CONTAINER_NAME_TOOLCHAIN /bin/bash /var/local/install.sh
 
 echo "========== start to transfer thirdparty..."
+rm -rf ../sr-thirdparty/thirdparty
 docker cp $CONTAINER_NAME_TOOLCHAIN:/var/local/thirdparty ../sr-thirdparty/
 rm -rf jdk.rpm
 
