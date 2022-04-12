@@ -33,7 +33,7 @@ RUN /bin/bash ${DEFAULT_DIR}/install_mvn.sh ${BASE_URL} ${MAVEN_VERSION} ${SHA}
 ENV MAVEN_HOME /usr/share/maven
 
 # ===== different =====
-
+ENV https_proxy ""
 # install llvm
 COPY llvm ${DEFAULT_DIR}/llvm
 ENV PATH "$PATH:/var/local/llvm/bin"

@@ -1,5 +1,5 @@
 ## JDK
-JDK_SOURCE='https://cdn-thirdparty.starrocks.com/java-se-8u41-ri.tar.gz'
+JDK_SOURCE='https://cdn-thirdparty.starrocks.com/openjdk-8u322-b06-linux-x64.tar.gz'
 
 ## llvm
 LLVM_SOURCE='http://cdn-thirdparty.starrocks.com/clang-format'
