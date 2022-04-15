@@ -2,19 +2,24 @@ set -e
 curdir=`dirname "$0"`
 curdir=`cd "$curdir"; pwd`
 
+GIT_BRANCH=${1:-"main"}
+IMAGE_VERSION=${2:-"rc"}
+GIT_REPO='https://github.com/StarRocks/starrocks.git'
+CONTAINER_NAME_TOOLCHAIN='con_chain'
+CONTAINER_NAME_THIRDPARTY='con_thirdparty'
+
 IMAGE_NAME_TOOLCHAIN='toolchain'
 IMAGE_NAME_THIRDPARTY='dev-env'
 
 MACHINE_TYPE=$(uname -m)
-
-echo "======= build image on $MACHINE_TYPE."
+echo "======= build image on $MACHINE_TYPE"
 
 PARAMS_TARGET=params_source_$MACHINE_TYPE.sh
 echo "$PARAMS_TARGET"
 
-source $curdir/params_common.sh
 source $curdir/$PARAMS_TARGET
 
+PROXY="http://172.26.92.139:28888"
 echo "======= proxy is $PROXY"
 export https_proxy=$PROXY
 
