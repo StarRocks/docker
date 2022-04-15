@@ -1,14 +1,6 @@
-# container name
-CONTAINER_NAME_TOOLCHAIN='con_chain_1'
-CONTAINER_NAME_THIRDPARTY='con_thirdparty'
-
-# dependency
-
-## git repo
+GIT_BRANCH=${1:-"main"}
+IMAGE_VERSION=${2:-"rc"}
 GIT_REPO='https://github.com/StarRocks/starrocks.git'
-GIT_BRANCH='branch-2.0'
-
-IMAGE_VERSION='v1'
-
-## PROXY
+CONTAINER_NAME_TOOLCHAIN='con_chain'
+CONTAINER_NAME_THIRDPARTY='con_thirdparty'
 PROXY="http://172.26.92.139:28888"
