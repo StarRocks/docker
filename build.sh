@@ -25,10 +25,7 @@ export https_proxy=$PROXY
 
 RUNNING=$(docker ps -a | grep $CONTAINER_NAME_TOOLCHAIN || echo 0)
 if [ ${#RUNNING} != 1 ]; then
-    echo "======= $CONTAINER_NAME_TOOLCHAIN is exist."
-    exit 1
-else 
-    echo "======= $CONTAINER_NAME_TOOLCHAIN will run."
+    docker rm -f $CONTAINER_NAME_TOOLCHAIN
 fi
 
 wget -O java.tar.gz "$JDK_SOURCE"
@@ -95,7 +92,7 @@ docker run -it --name $CONTAINER_NAME_TOOLCHAIN -d starrocks/$IMAGE_NAME_TOOLCHA
 
 echo "========== start to build thirdparty..."
 
-docker exec -it $CONTAINER_NAME_TOOLCHAIN /bin/bash /var/local/install.sh
+docker exec $CONTAINER_NAME_TOOLCHAIN /bin/bash /var/local/install.sh
 
 echo "========== start to transfer thirdparty..."
 rm -rf ../sr-thirdparty/thirdparty
