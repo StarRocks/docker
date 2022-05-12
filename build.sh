@@ -4,6 +4,7 @@ curdir=`cd "$curdir"; pwd`
 
 GIT_BRANCH=${1:-"main"}
 IMAGE_VERSION=${2:-"rc"}
+USE_PR=${3:-0}
 GIT_REPO='https://github.com/StarRocks/starrocks.git'
 CONTAINER_NAME_TOOLCHAIN='con_chain'
 CONTAINER_NAME_THIRDPARTY='con_thirdparty'
@@ -40,7 +41,17 @@ rm -rf cmake.tar
 
 rm -rf sr-toolchain/starrocks
 
-git clone -b $GIT_BRANCH $GIT_REPO sr-toolchain/starrocks
+if [[ $USE_PR == 0 ]];then
+    git clone -b $GIT_BRANCH $GIT_REPO sr-toolchain/starrocks
+else
+    # GIT_BRANCH will be pr id when USE_PR is not 0
+    git clone $GIT_REPO sr-toolchain/starrocks
+    cd sr-toolchain/starrocks
+    git fetch origin pull/${GIT_BRANCH}/head:${GIT_BRANCH}
+    git checkout $GIT_BRANCH
+    cd $curdir
+    IMAGE_VERSION="pr-"$GIT_BRANCH
+fi
 
 if [[ ! -d "sr-toolchain/starrocks" ]]; then  
     echo "starrocks not found"
