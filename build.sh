@@ -6,7 +6,7 @@ GIT_BRANCH=${1:-"main"}
 IMAGE_VERSION=${2:-"rc"}
 USE_PR=${3:-0}
 GIT_REPO='https://github.com/StarRocks/starrocks.git'
-CONTAINER_NAME_TOOLCHAIN='con_chain'
+CONTAINER_NAME_TOOLCHAIN="con_chain_"${GIT_BRANCH}
 CONTAINER_NAME_THIRDPARTY='con_thirdparty'
 
 IMAGE_NAME_TOOLCHAIN='toolchain'
@@ -147,4 +147,4 @@ docker build \
 --build-arg BASE_URL=$BASE_URL .
 
 echo "========== build $IMAGE_NAME_THIRDPARTY done..."
-
+docker rm -f $CONTAINER_NAME_TOOLCHAIN
