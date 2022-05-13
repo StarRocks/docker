@@ -1,6 +1,9 @@
 set -e
-curdir=`dirname "$0"`
-curdir=`cd "$curdir"; pwd`
+curdir=$(dirname "$0")
+curdir=$(
+    cd "$curdir"
+    pwd
+)
 
 GIT_BRANCH=${1:-"main"}
 IMAGE_VERSION=${2:-"rc"}
@@ -41,7 +44,7 @@ rm -rf cmake.tar
 
 rm -rf sr-toolchain/starrocks
 
-if [[ $USE_PR == 0 ]];then
+if [[ $USE_PR == 0 ]]; then
     git clone -b $GIT_BRANCH $GIT_REPO sr-toolchain/starrocks
 else
     # GIT_BRANCH will be pr id when USE_PR is not 0
@@ -53,10 +56,10 @@ else
     IMAGE_VERSION="pr-"$GIT_BRANCH
 fi
 
-if [[ ! -d "sr-toolchain/starrocks" ]]; then  
+if [[ ! -d "sr-toolchain/starrocks" ]]; then
     echo "starrocks not found"
     exit 1
-fi 
+fi
 
 if [[ ! -f "sr-toolchain/starrocks/thirdparty/vars.sh" ]]; then
     echo "vars.sh not found"
@@ -74,12 +77,12 @@ cp install_env_gcc_$MACHINE_TYPE.sh sr-toolchain/install_env_gcc.sh
 cp install_java_$MACHINE_TYPE.sh sr-toolchain/install_java.sh
 cp install_mvn_$MACHINE_TYPE.sh sr-toolchain/install_mvn.sh
 
-copy_num=$(sed -n  '/===== Downloading thirdparty archives...done/=' sr-toolchain/starrocks/thirdparty/download-thirdparty.sh)
+copy_num=$(sed -n '/===== Downloading thirdparty archives...done/=' sr-toolchain/starrocks/thirdparty/download-thirdparty.sh)
 if [[ copy_num == 0 ]]; then
     echo "===== cannot generate download scripts"
     exit 1
 fi
-head -n $copy_num sr-toolchain/starrocks/thirdparty/download-thirdparty.sh > sr-toolchain/starrocks/thirdparty/download-for-docker-thirdparty.sh
+head -n $copy_num sr-toolchain/starrocks/thirdparty/download-thirdparty.sh >sr-toolchain/starrocks/thirdparty/download-for-docker-thirdparty.sh
 
 echo '========== download thirdparty src...'
 bash sr-toolchain/starrocks/thirdparty/download-for-docker-thirdparty.sh
@@ -88,13 +91,13 @@ bash sr-toolchain/starrocks/thirdparty/download-for-docker-thirdparty.sh
 echo "========== start to build $IMAGE_NAME_TOOLCHAIN..."
 cd sr-toolchain
 docker build \
--t starrocks/$IMAGE_NAME_TOOLCHAIN:$IMAGE_VERSION \
---build-arg PROXY=$PROXY \
---build-arg GCC_VERSION=$GCC_VERSION \
---build-arg GCC_URL=$GCC_URL \
---build-arg MAVEN_VERSION=$MAVEN_VERSION \
---build-arg SHA=$SHA \
---build-arg BASE_URL=$BASE_URL .
+    -t starrocks/$IMAGE_NAME_TOOLCHAIN:$IMAGE_VERSION \
+    --build-arg PROXY=$PROXY \
+    --build-arg GCC_VERSION=$GCC_VERSION \
+    --build-arg GCC_URL=$GCC_URL \
+    --build-arg MAVEN_VERSION=$MAVEN_VERSION \
+    --build-arg SHA=$SHA \
+    --build-arg BASE_URL=$BASE_URL .
 
 echo "========== build $IMAGE_NAME_TOOLCHAIN... done"
 
@@ -138,13 +141,13 @@ chmod +x llvm/bin/clang-format
 echo "========== start to build $IMAGE_NAME_THIRDPARTY..."
 
 docker build \
--t starrocks/$IMAGE_NAME_THIRDPARTY:$GIT_BRANCH-$IMAGE_VERSION \
---build-arg PROXY=$PROXY \
---build-arg GCC_VERSION=$GCC_VERSION \
---build-arg GCC_URL=$GCC_URL \
---build-arg MAVEN_VERSION=$MAVEN_VERSION \
---build-arg SHA=$SHA \
---build-arg BASE_URL=$BASE_URL .
+    -t starrocks/$IMAGE_NAME_THIRDPARTY:$GIT_BRANCH-$IMAGE_VERSION \
+    --build-arg PROXY=$PROXY \
+    --build-arg GCC_VERSION=$GCC_VERSION \
+    --build-arg GCC_URL=$GCC_URL \
+    --build-arg MAVEN_VERSION=$MAVEN_VERSION \
+    --build-arg SHA=$SHA \
+    --build-arg BASE_URL=$BASE_URL .
 
 echo "========== build $IMAGE_NAME_THIRDPARTY done..."
 docker rm -f $CONTAINER_NAME_TOOLCHAIN
