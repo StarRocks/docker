@@ -1,43 +1,28 @@
 # docker 
 
-> 使用该脚本构建需要有 root 权限，或者使用用户在 机器的 docker 组内
+This project is used to compile the StarRocks-dev-env image, which you can use to compile the StarRocks source code. The project will automatically compile the x86_64 or aarch64 image based on your system.If you don't want to compile it yourself, you can use the compiled image we provide [here](https://registry.hub.docker.com/r/starrocks/dev-env/tags).  
+To use this project, you need to have root privileges or use a user in the docker group of the machine, and also need a running docker service.
 
-## 文件说明
+## How to use
+### Compile StarRocks-dev-env image
+This project supports compiling image from StarRocks branch or PR, which is controlled by passing in parameters to build.sh. We can pass in three parameters, which have the following meaning.
+```
+sudo sh build.sh $1 $2 $3
+# $1: Choose to use branch or pr
+# $2: Branch name or pr id
+# $3: The image name of the final successful compilation, which defaults is rc
+```
+### Compile StarRocks using the image compiled in the previouse step
+For specific steps, please refer to the [documentation](https://docs.starrocks.com/en-us/main/administration/Build_in_docker). For example, if we choose to use the `branch-2.2` to compile, `{version}` in the documentation will be `branch-2.2-rc`.
 
+## Build Process Introduction
+Description of the file structure
 ```
 .
-├── docker_make.sh      # image 构建脚本
-├── params.sh           # 参数脚本，配置构建 image 的参数
-├── README.md
-├── sr-thirdparty       # thirdparty image 构建文件夹
-│   ├── Dockerfile
-│   └── start.sh
-└── sr-toolchain        # toolchain image 构建文件夹
-    └── Dockerfile
-    └── install.sh    
+├── build.sh            # main script
+├── sr-thirdparty       # thirdparty image build folder
+└── sr-toolchain        # toolchain image build folder
 ```
-## 构建流程简介
-
-1. 构建 image `starrocks/toolchain`
-2. 启动 `starrocks/toolchain` container， container 中执行 `starrocks` 代码中 `thirdparty` 相关脚本，构建 `starrocks` 的编译环境
-3. copy thirdparty from container 用于构建 `starrocks/thirdparty`
-
-## 构建对应版本编译环境的 `starrocks/thirdparty` 镜像的方法
-
-1. 修改 params.sh 中的配置
-2. 执行 docker_make.sh
-
-## 使用 `starrocks/thirdparty` 进行 `starrocks` 的编译的方法
-
-1. `docker run -it -d --{container-name} starrocks/thirdparty:{version}`
-2. `docker exec -it {container-name} /bin/bash`
-3. 进入 container，在任意目录下 clone starrocks 对应分支代码，可直接执行 starrocks/build.sh 进行编译
-4. 编译完成后，可使用 `docker cp {container-name}:/xx/xx /xx/xx/` 将需要的二进制包 copy 到宿主机上
-
-## 版本
-
-- starrocks main <===> docker image main
-> main 分支的三方依赖变更，需要重新 build main 分支对应的 `starrocks/thirdparty:main`
-- starrocks release version <===> docker image version
-> 发布新版本，需要 release 对应版本的 `starrocks/thirdparty:{version}`
-
+1. Build the `starrocks/toolchain` image
+2. Use the `starrocks/toolchain` image to start a container, execute the `starrocks/thirdparty` related scripts in the container, and copy the built folder to the host
+3. Build the StarRocks-dev-env image based on the thirdparty build file generated in the previous step
