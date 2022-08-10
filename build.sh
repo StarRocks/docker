@@ -106,7 +106,7 @@ echo "===== start $CONTAINER_NAME_TOOLCHAIN..."
 docker run -it --name $CONTAINER_NAME_TOOLCHAIN -d starrocks/$IMAGE_NAME_TOOLCHAIN:$IMAGE_VERSION
 
 echo "===== start to build thirdparty"
-docker exec $CONTAINER_NAME_TOOLCHAIN /bin/bash /var/local/install.sh
+docker exec $CONTAINER_NAME_TOOLCHAIN /bin/bash /var/local/install.sh || exit 1
 
 echo "===== start to transfer thirdparty..."
 rm -rf ../sr-thirdparty/thirdparty
