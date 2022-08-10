@@ -9,7 +9,7 @@ CMAKE_SOURCE='https://github.com/Kitware/CMake/releases/download/v3.22.2/cmake-3
 
 ## GCC
 GCC_VERSION=10.3.0
-GCC_URL="https://mirrors.ustc.edu.cn/gnu/gcc/gcc-$GCC_VERSION"
+GCC_URL="https://mirrors.ustc.edu.cn/gnu/gcc/gcc-10.3.0/gcc-${GCC_VERSION}.tar.gz"
 
 ## MAVEN
 MAVEN_VERSION=3.6.3
