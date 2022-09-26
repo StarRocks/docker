@@ -11,6 +11,15 @@ sudo sh build.sh $1 $2 $3
 # $1: Choose to use branch or pr
 # $2: Branch name or pr id
 # $3: The image name of the final successful compilation, which defaults is rc
+# $4: The http proxy path, which defaults is ""
+```
+For example, if you want to use branch-2.4 latest code to compile the image, you can write like this
+```
+sudo sh build.sh branch branch-2.4
+```
+If you want to compile the image using the code from https://github.com/StarRocks/starrocks/pull/9436 and you have an http proxy address, you can write like this
+```
+sudo sh build.sh pr 9436 rc "http://x.x.x.x:port"
 ```
 ### Compile StarRocks using the image compiled in the previouse step
 For specific steps, please refer to the [documentation](https://docs.starrocks.com/en-us/main/administration/Build_in_docker). For example, if we choose to use the `branch-2.2` to compile, `{version}` in the documentation will be `branch-2.2-rc`.
