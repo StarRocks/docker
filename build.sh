@@ -6,9 +6,11 @@ curdir=$(
     pwd
 )
 
-BUILD_TYPE=${1:?"The first parameter is required, select use branch or pr code"}
+BUILD_TYPE=${1:?"The first parameter is required, select branch/pr"}
 GIT_BRANCH=${2:?"The second parameter is required, input branch name or pr id"}
 IMAGE_VERSION=${3:-"rc"}
+PROXY=${4:-""}
+
 GIT_REPO='https://github.com/StarRocks/starrocks.git'
 CONTAINER_NAME_TOOLCHAIN="con_chain_"${GIT_BRANCH}
 CONTAINER_NAME_THIRDPARTY='con_thirdparty'
@@ -23,7 +25,6 @@ PARAMS_TARGET=params_source_$MACHINE_TYPE.sh
 
 source $curdir/$PARAMS_TARGET
 
-PROXY="http://172.26.92.139:28888"
 echo "===== proxy is $PROXY"
 export https_proxy=$PROXY
 
