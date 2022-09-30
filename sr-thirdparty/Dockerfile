@@ -44,4 +44,9 @@ COPY thirdparty ${DEFAULT_DIR}/thirdparty
 ENV STARROCKS_THIRDPARTY /var/local/thirdparty
 ENV STARROCKS_GCC_HOME /usr
 
+# reinstall maven and ccache because this two libs counld be installed failed before.
+RUN yum install -y epel-release
+RUN yum install -y maven
+RUN yum install -y ccache
+
 CMD top

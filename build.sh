@@ -19,6 +19,11 @@ IMAGE_NAME_TOOLCHAIN='toolchain'
 IMAGE_NAME_THIRDPARTY='dev-env'
 
 MACHINE_TYPE=$(uname -m)
+# handle mac m1 platform, change arm64 to aarch64
+if [[ "${MACHINE_TYPE}" == "arm64" ]]; then 
+    MACHINE_TYPE="aarch64"
+fi
+
 echo "===== build image on $MACHINE_TYPE"
 
 PARAMS_TARGET=params_source_$MACHINE_TYPE.sh
