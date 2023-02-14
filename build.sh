@@ -47,6 +47,14 @@ rm -rf sr-toolchain/starrocks
 
 if [[ $BUILD_TYPE == "branch" ]]; then
     git clone -b $GIT_BRANCH $GIT_REPO sr-toolchain/starrocks
+
+elif [[ $BUILD_TYPE == "tag" ]]; then
+    # GIT_BRANCH will be tag name when BUILD_TYPE is tag
+    git clone -b main $GIT_REPO sr-toolchain/starrocks
+    cd sr-toolchain/starrocks
+    git checkout $GIT_BRANCH
+    cd $curdir
+
 elif [[ $BUILD_TYPE == "pr" ]]; then
     # GIT_BRANCH will be pr id when BUILD_TYPE is pr
     git clone $GIT_REPO sr-toolchain/starrocks
@@ -55,6 +63,7 @@ elif [[ $BUILD_TYPE == "pr" ]]; then
     git checkout $GIT_BRANCH
     cd $curdir
     IMAGE_VERSION="pr-"$GIT_BRANCH
+
 else
     echo "ERROR: only supports branch or pr"
     exit 1
