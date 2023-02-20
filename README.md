@@ -8,8 +8,8 @@ To use this project, you need to have root privileges or use a user in the docke
 This project supports compiling image from StarRocks branch or PR, which is controlled by passing in parameters to build.sh. We can pass in three parameters, which have the following meaning.
 ```
 sudo sh build.sh $1 $2 $3
-# $1: Choose to use branch or pr
-# $2: Branch name or pr id
+# $1: Choose to use branch/tag/pr option
+# $2: Branch name/tag name/pr id
 # $3: The image name of the final successful compilation, which defaults is rc
 # $4: The http proxy path, which defaults is ""
 ```
