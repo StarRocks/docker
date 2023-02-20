@@ -6,10 +6,11 @@ curdir=$(
     pwd
 )
 
-BUILD_TYPE=${1:?"The first parameter is required, select branch/pr"}
-GIT_BRANCH=${2:?"The second parameter is required, input branch name or pr id"}
+BUILD_TYPE=${1:?"The first parameter is required, select branch/tag/pr"}
+GIT_BRANCH=${2:?"The second parameter is required, select branch_name/tag_name/pr_id"}
 IMAGE_VERSION=${3:-"rc"}
 PROXY=${4:-""}
+PR_TARGET_BRANCH=${5:-"main"}
 
 GIT_REPO='https://github.com/StarRocks/starrocks.git'
 CONTAINER_NAME_TOOLCHAIN="con_chain_"${GIT_BRANCH}
@@ -61,6 +62,13 @@ elif [[ $BUILD_TYPE == "pr" ]]; then
     cd sr-toolchain/starrocks
     git fetch origin pull/${GIT_BRANCH}/head:${GIT_BRANCH}
     git checkout $GIT_BRANCH
+
+    # merge pr commit to target_branch: main|branch-2.3 and so on, the merge branch is merge_pr.
+    git branch -D merge_pr || true
+    git checkout $PR_TARGET_BRANCH
+    git checkout -b merge_pr
+    git merge --squash --no-edit ${GIT_BRANCH} || (echo "Merge main conflict, please check." && git reset --merge && git branch -D ${GIT_BRANCH} && git checkout $PR_TARGET_BRANCH && exit -1)
+
     cd $curdir
     IMAGE_VERSION="pr-"$GIT_BRANCH
 
