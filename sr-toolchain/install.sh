@@ -1,3 +1,6 @@
+#!/bin/bash
+set -eo pipefail
+
 DEFAULT_DIR='/var/local'
 cp -r $DEFAULT_DIR/starrocks/thirdparty $DEFAULT_DIR/thirdparty
 ln -s $DEFAULT_DIR/thirdparty $DEFAULT_DIR/starrocks/thirdparty
